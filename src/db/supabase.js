@@ -1,10 +1,25 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+// Lazy init — client is created only when first accessed so the module
+// can be required even before .env is loaded (e.g. in tests).
+let _supabase = null;
+function getClient() {
+  if (!_supabase) {
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+      throw new Error('SUPABASE_URL and SUPABASE_KEY must be set in .env');
+    }
+    _supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+  }
+  return _supabase;
+}
+
+// Proxy so existing code can still write `supabase.from(...)` as before
+const supabase = new Proxy({}, {
+  get(_, prop) {
+    return getClient()[prop];
+  },
+});
 
 // --- Stores ---
 async function getStoreByPhone(whatsappNumber) {
