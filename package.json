@@ -1,0 +1,21 @@
+{
+  "name": "vyapari",
+  "version": "1.0.0",
+  "description": "WhatsApp-native business OS for Indian SME store owners",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": ["whatsapp", "inventory", "india", "sme"],
+  "author": "Vyapari",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.100.1",
+    "@supabase/supabase-js": "^2.107.0",
+    "axios": "^1.17.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-cron": "^4.2.1"
+  }
+}
